@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>You are logged in</title>
+<link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<h1>
+  This is from tera file which can be updated on the fly
+</h1>
+{% for message in messages %}
+<div class="message">
+  <div class="name">
+    {{message.name}}
+  </div>
+  <div class="text">
+    {{message.text}}
+  </div>
+</div>
+{% endfor %}
+</body>
+</html>
