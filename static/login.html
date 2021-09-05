@@ -1,18 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="css/main.css">
 <head>
-  <meta charset="UTF-8">
-  <title>You are logged in</title>
+    <meta charset="UTF-8">
+    <title>You are logged in</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-<div class="message">
-  <div class="name">
-    My name
-  </div>
-  <div class="text">
-    the world is going to explode
-  </div>
+<h1>
+    This is from tera file which can be updated on the fly
+</h1>
+
+<div class="flex_container">
+    <div id="left_bar">
+        <div id="rooms">
+
+            <div class="room">
+                this is a room
+            </div>
+
+        </div>
+        <div id="options">
+
+        </div>
+    </div>
+    <div id="main_content">
+        <div id="messages">
+
+            <div class="{% if message.from_current_user %}sent{% else %}received{% endif %}"
+            >
+                <div class="message">
+
+                    <div class="name">
+                        default name
+                    </div>
+                    <div class="text">
+                        default message
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="new_message_box">
+            <input id="user">
+            <input id="text">
+            <input id="send_message" type="button">
+        </form>
+    </div>
+    <div class="textbox">
+
+    </div>
 </div>
 </body>
+
+
+<script src="js/chat_window.js"></script>
 </html>

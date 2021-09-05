@@ -5,6 +5,8 @@ extern crate tera;
 use rocket::fs::FileServer;
 use rocket::form::*;
 use rocket_dyn_templates::{Template};
+use rocket::serde::json;
+use serde::Deserialize;
 
 
 #[get("/")]
@@ -48,11 +50,41 @@ struct UserLogin<'v> {
     password: &'v str
 }
 
+use rocket::response::stream::EventStream;
+use rocket::response::stream::Event;
 
+#[get("/stream")]
+fn messages_loop() -> EventStream![] {
+    EventStream!{
+        let  mut interval = rocket::tokio::time::interval(rocket::tokio::time::Duration::from_secs(2));
+        loop {
+            let message = Message {
+                name: "Lily",
+                text: "Oh hey I just logged on",
+                from_current_user: false
+            };
+            let event = Event::json(&message);
+            yield event;
+            interval.tick().await;
+        }
+    }
+}
+
+#[derive(Debug, FromForm, Serialize, Deserialize)]
+struct MessageData<'v> {
+    user: &'v str,
+    text: &'v str
+}
+
+#[post("/send_message", format="json", data = "<message_data>")]
+async fn get_message<'l>(message_data:json::Json<MessageData<'l>>) {
+    println!("got a new message to process");
+    println!("{}: said {}",message_data.user, message_data.text);
+}
 
 
 #[post("/login", data = "<user_form>")]
-fn login<'r>(user_form: Form<UserLogin<'r>> ) -> Template {
+fn login<'r>(user_form: Form<UserLogin<'r>> ) -> rocket::response::Redirect {
     let current_user = "paper";
     let t = match tera::Tera::new("templates/*") {
         Ok(t) => t,
@@ -86,12 +118,24 @@ fn login<'r>(user_form: Form<UserLogin<'r>> ) -> Template {
         rooms: vec![String::from("BA"), String::from("Gaming")]
     };
 
-    Template::render("login", messages)
+    let fs = FileServer::from("static/");
+
+    //Template::render("login", messages);
+    rocket::response::Redirect::to("/login.html")
+    
 }
 
 
 #[launch]
 fn rocket() -> _ {
+    let mes = Message {
+        name: "one",
+        text: "two",
+        from_current_user: true
+    };
+    use json::json;
+    let thisis = json!(mes);
+    println!("{}", thisis);
     let paths = std::fs::read_dir("./").unwrap();
 
     for path in paths {
@@ -101,7 +145,11 @@ fn rocket() -> _ {
         //.mount("/", routes![index,delay])
         .mount("/", FileServer::from("static/"))
         .mount("/", routes![login])
+        .mount("/", routes![messages_loop])
+        .mount("/", routes![get_message])
         .attach(Template::fairing())
+        
+
 } 
 
 use rocket::tokio::time::{sleep, Duration};

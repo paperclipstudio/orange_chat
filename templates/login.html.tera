@@ -13,11 +13,11 @@
 <div class="flex_container">
     <div id="left_bar">
         <div id="rooms">
-            {% for room in rooms %}
+
             <div class="room">
                 this is a room
             </div>
-            {% endfor %}
+
         </div>
         <div id="options">
 
@@ -25,25 +25,26 @@
     </div>
     <div id="main_content">
         <div id="messages">
-            {% for message in messages %}
 
             <div class="{% if message.from_current_user %}sent{% else %}received{% endif %}"
             >
                 <div class="message">
 
                     <div class="name">
-                        {{message.name}}
+                        default name
                     </div>
                     <div class="text">
-                        {{message.text}}
+                        default message
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
 
-        <input id="message_box">
-        <button id="send_btn">send</button>
+        <form id="new_message_box">
+            <input id="user">
+            <input id="text">
+            <input id="send_message" type="button">
+        </form>
     </div>
     <div class="textbox">
 
