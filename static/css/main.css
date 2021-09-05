@@ -20,7 +20,6 @@ html {
 }
 
 div.message {
-  background: antiquewhite;
   height: min-content;
   border: 2px solid gray;
   border-radius: 20%;
@@ -31,7 +30,6 @@ div.message div.text {
   font-family: "Arial Narrow";
   width: 100px;
   padding: 20px;
-  background: lightgrey;
   margin: 30px;
 }
 
@@ -41,10 +39,46 @@ div.message div.name {
   font-style: italic;
   font-size: 30px;
 }
+.flex_container {
+  display:flex;
+  width: 100vw;
+  background-color: purple;
+}
+#rooms {
+  background-color: pink;
+  padding: 5px;
+  height: 100%;
+  width: 10%;
+  overflow: hidden;
+}
+#rooms:hover {
+  width: fit-content;
+}
 
-;
+#messages {
+  background-color: darkgray;
+  height: 90vw;
+  overflow-y: scroll;
+  width: 90vw;
+  display:flex;
+  flex-direction: column;
 }
+
+
+div.sent div.message {
+  float: right;
+  background-color: lightpink;
 }
+
+div.received div.message {
+  float: left;
+  background-color: bisque;
+}
+
+.room {
+  padding: 5px;
+  background: white;
+  margin: 20px;
 }
 
 /*

@@ -20,11 +20,14 @@ use serde::Serialize;
 #[derive(Serialize, Clone)]
 struct Message {
     name: &'static str,
-    text: &'static str
+    text: &'static str,
+    from_current_user: bool
 }
+
 #[derive(Serialize, Clone)]
 struct Messages {
-    messages: Vec<Message>
+    messages: Vec<Message>,
+    rooms: Vec<String>
 }
 
 #[get("/delay/<seconds>")]
@@ -50,6 +53,7 @@ struct UserLogin<'v> {
 
 #[post("/login", data = "<user_form>")]
 fn login<'r>(user_form: Form<UserLogin<'r>> ) -> Template {
+    let current_user = "paper";
     let t = match tera::Tera::new("templates/*") {
         Ok(t) => t,
         Err(e) => {
@@ -64,10 +68,22 @@ fn login<'r>(user_form: Form<UserLogin<'r>> ) -> Template {
 
     let test = Message {
         name: "Tom",
-        text: "You should go to sleep"
+        text: "Im good, how are you?",
+        from_current_user: false,
     };
+    let my_message = Message {
+        name: "Paper",
+        text: "Not too bad, wuu2?",
+        from_current_user: true,
+    };
+    let mut some_convo = vec![test.clone()];
+    for _ in 1..5 {
+        some_convo.push(test.clone());
+        some_convo.push(my_message.clone());
+    }
     let messages = Messages {
-        messages: vec![test;30]
+        messages: some_convo,
+        rooms: vec![String::from("BA"), String::from("Gaming")]
     };
 
     Template::render("login", messages)

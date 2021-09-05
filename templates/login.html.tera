@@ -1,23 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>You are logged in</title>
-<link rel="stylesheet" href="/css/main.css">
+    <meta charset="UTF-8">
+    <title>You are logged in</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <h1>
-  This is from tera file which can be updated on the fly
+    This is from tera file which can be updated on the fly
 </h1>
-{% for message in messages %}
-<div class="message">
-  <div class="name">
-    {{message.name}}
-  </div>
-  <div class="text">
-    {{message.text}}
-  </div>
+
+<div class="flex_container">
+    <div id="left_bar">
+        <div id="rooms">
+            {% for room in rooms %}
+            <div class="room">
+                this is a room
+            </div>
+            {% endfor %}
+        </div>
+        <div id="options">
+
+        </div>
+    </div>
+    <div id="main_content">
+        <div id="messages">
+            {% for message in messages %}
+
+            <div class="{% if message.from_current_user %}sent{% else %}received{% endif %}"
+            >
+                <div class="message">
+
+                    <div class="name">
+                        {{message.name}}
+                    </div>
+                    <div class="text">
+                        {{message.text}}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <input id="message_box">
+        <button id="send_btn">send</button>
+    </div>
+    <div class="textbox">
+
+    </div>
 </div>
-{% endfor %}
 </body>
+
+
+<script src="js/chat_window.js"></script>
 </html>
